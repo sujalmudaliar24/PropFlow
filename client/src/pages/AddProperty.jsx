@@ -72,6 +72,7 @@ const AddProperty = () => {
             setSuccess('Property added successfully!');
             setTimeout(() => navigate('/inventory'), 1500);
         } catch (err) {
+            console.error('Property creation error:', err);
             setError(err.response?.data?.message || 'Failed to add property');
         } finally {
             setLoading(false);
