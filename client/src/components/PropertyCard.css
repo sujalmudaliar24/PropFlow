@@ -161,3 +161,15 @@
 .btn-delete:hover {
     background: rgba(255, 82, 82, 0.25);
 }
+
+@media (max-width: 480px) {
+    .property-card-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .property-details {
+        grid-template-columns: 1fr;
+    }
+}

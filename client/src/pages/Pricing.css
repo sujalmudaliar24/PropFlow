@@ -134,3 +134,19 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+@media (max-width: 768px) {
+    .pricing-page {
+        padding: 2rem 1rem;
+    }
+
+    .pricing-header h1 {
+        font-size: 2rem;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}

@@ -150,3 +150,39 @@
     border-radius: 10px;
     transition: width 0.5s ease;
 }
+
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 1.5rem 1rem;
+    }
+
+    .dashboard-welcome h1 {
+        font-size: 1.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .action-card {
+        padding: 1rem;
+    }
+
+    .action-icon {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -251,3 +251,54 @@
     margin: 0;
     font-family: inherit;
 }
+
+@media (max-width: 768px) {
+    .inventory-page {
+        padding: 1.5rem 1rem;
+    }
+
+    .filter-row {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .filter-actions {
+        width: 100%;
+    }
+
+    .btn-clear {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .share-bar {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: 0.75rem;
+    }
+
+    .btn-whatsapp,
+    .btn-clear-selection {
+        width: 100%;
+    }
+
+    .properties-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .modal-actions button {
+        width: 100%;
+    }
+}

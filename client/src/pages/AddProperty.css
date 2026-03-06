@@ -62,3 +62,25 @@
     font-size: 0.85rem;
     margin-bottom: 1rem;
 }
+
+@media (max-width: 768px) {
+    .add-property-page {
+        padding: 1.5rem 1rem;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 1rem;
+    }
+
+    .btn-submit,
+    .btn-cancel {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
