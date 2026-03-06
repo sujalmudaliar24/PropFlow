@@ -31,12 +31,9 @@ app.use((err, req, res, next) => {
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`PropFlow Server running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Database connection error:', err);
-  });
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('Database connection error:', err));
+
+app.listen(PORT, () => {
+  console.log(`PropFlow Server running on port ${PORT}`);
+});
