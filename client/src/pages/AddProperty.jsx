@@ -73,7 +73,8 @@ const AddProperty = () => {
             setTimeout(() => navigate('/inventory'), 1500);
         } catch (err) {
             console.error('Property creation error:', err);
-            const msg = err.response?.data?.message || err.message || 'Failed to add property';
+            const url = err.config?.url ? ` (${err.config.baseURL}${err.config.url})` : '';
+            const msg = (err.response?.data?.message || err.message || 'Failed to add property') + url;
             setError(msg);
         } finally {
             setLoading(false);
