@@ -28,7 +28,7 @@ const Navbar = () => {
             <div className="nav-user">
                 <span className="nav-plan-badge">{user?.plan}</span>
                 <span className="nav-user-name">{user?.name}</span>
-                <button onClick={handleLogout} className="nav-logout">Logout</button>
+                <button onClick={handleLogout} className="nav-logout">Sign out</button>
             </div>
         </nav>
     );
