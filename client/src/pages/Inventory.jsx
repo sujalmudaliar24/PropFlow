@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { searchProperties, deleteProperty, shareProperties } from '../services/api';
 import Navbar from '../components/Navbar';
 import PropertyCard from '../components/PropertyCard';
+import gsap from 'gsap';
 import './Inventory.css';
 
 const PROPERTY_TYPES = ['All', 'Residential', 'Commercial'];
@@ -15,6 +17,7 @@ const Inventory = () => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [shareForm, setShareForm] = useState({ clientName: '', clientPhone: '' });
     const [shareResult, setShareResult] = useState(null);
+    const gridRef = useRef(null);
 
     // Filters
     const [filters, setFilters] = useState({
@@ -56,6 +59,19 @@ const Inventory = () => {
     useEffect(() => {
         fetchProperties();
     }, [fetchProperties]);
+
+    useEffect(() => {
+        if (properties.length > 0 && gridRef.current) {
+            gsap.from('.property-card', {
+                y: 30,
+                opacity: 0,
+                duration: 0.6,
+                stagger: 0.05,
+                ease: 'power2.out',
+                clearProps: 'all'
+            });
+        }
+    }, [properties, loading]);
 
     const handleFilterChange = (key, value) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
@@ -104,40 +120,39 @@ const Inventory = () => {
             <Navbar />
             <main className="inventory-page">
                 <div className="inventory-header">
-                    <h1>Search Inventory</h1>
-                    <p>{totalProperties} properties found</p>
+                    <div>
+                        <h1>Real Estate <span className="highlight">Inventory</span></h1>
+                        <p>Discover and manage your prime properties</p>
+                    </div>
+                    <div className="inventory-stats-bento">
+                        <div className="inv-stat">
+                            <span className="inv-stat-val">{totalProperties}</span>
+                            <span className="inv-stat-label">Total Listings</span>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Filters */}
-                <div className="filters-panel">
-                    <div className="filter-row">
+                {/* Filters as Bento-ish Panel */}
+                <div className="bento-item filters-panel">
+                    <div className="filter-row main-search">
                         <div className="filter-group search-group">
                             <input
                                 type="text"
-                                placeholder="🔍 Search by society, area, or keywords..."
+                                placeholder="🔍 Search properties, locations..."
                                 value={filters.q}
                                 onChange={(e) => handleFilterChange('q', e.target.value)}
                                 className="filter-search"
                             />
                         </div>
                     </div>
-                    <div className="filter-row">
+                    <div className="filter-row grid-filters">
                         <div className="filter-group">
-                            <label>Area / Society</label>
+                            <label>Location</label>
                             <input
                                 type="text"
                                 placeholder="e.g. Vile Parle"
                                 value={filters.neighborhood}
                                 onChange={(e) => handleFilterChange('neighborhood', e.target.value)}
-                            />
-                        </div>
-                        <div className="filter-group">
-                            <label>City</label>
-                            <input
-                                type="text"
-                                placeholder="e.g. Mumbai"
-                                value={filters.city}
-                                onChange={(e) => handleFilterChange('city', e.target.value)}
                             />
                         </div>
                         <div className="filter-group">
@@ -152,58 +167,51 @@ const Inventory = () => {
                                 {TRANSACTION_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                             </select>
                         </div>
-                    </div>
-                    <div className="filter-row">
-                        <div className="filter-group">
-                            <label>Min Price (₹)</label>
-                            <input type="number" placeholder="0" value={filters.minPrice}
-                                onChange={(e) => handleFilterChange('minPrice', e.target.value)} />
+                        <div className="filter-group range-group">
+                            <label>Price Range (₹)</label>
+                            <div className="range-inputs">
+                                <input type="number" placeholder="Min" value={filters.minPrice}
+                                    onChange={(e) => handleFilterChange('minPrice', e.target.value)} />
+                                <input type="number" placeholder="Max" value={filters.maxPrice}
+                                    onChange={(e) => handleFilterChange('maxPrice', e.target.value)} />
+                            </div>
                         </div>
-                        <div className="filter-group">
-                            <label>Max Price (₹)</label>
-                            <input type="number" placeholder="Any" value={filters.maxPrice}
-                                onChange={(e) => handleFilterChange('maxPrice', e.target.value)} />
-                        </div>
-                        <div className="filter-group">
-                            <label>Min Area (sq.ft)</label>
-                            <input type="number" placeholder="0" value={filters.minArea}
-                                onChange={(e) => handleFilterChange('minArea', e.target.value)} />
-                        </div>
-                        <div className="filter-group">
-                            <label>Max Area (sq.ft)</label>
-                            <input type="number" placeholder="Any" value={filters.maxArea}
-                                onChange={(e) => handleFilterChange('maxArea', e.target.value)} />
-                        </div>
-                        <div className="filter-group filter-actions">
-                            <button onClick={clearFilters} className="btn-clear">Clear Filters</button>
+                        <div className="filter-group action-group">
+                            <button onClick={clearFilters} className="btn-text-only">Reset All</button>
                         </div>
                     </div>
                 </div>
 
                 {/* Share bar */}
                 {selectedIds.length > 0 && (
-                    <div className="share-bar">
-                        <span>{selectedIds.length} properties selected</span>
-                        <button className="btn-whatsapp" onClick={() => setShowShareModal(true)}>
-                            📱 Share via WhatsApp
-                        </button>
-                        <button className="btn-clear-selection" onClick={() => setSelectedIds([])}>
-                            Clear Selection
-                        </button>
+                    <div className="share-bar-bento">
+                        <span>{selectedIds.length} listings selected for your client</span>
+                        <div className="share-actions">
+                            <button className="btn-whatsapp-bento" onClick={() => setShowShareModal(true)}>
+                                📱 Share via WhatsApp
+                            </button>
+                            <button className="btn-clear-selection" onClick={() => setSelectedIds([])}>
+                                Dismiss
+                            </button>
+                        </div>
                     </div>
                 )}
 
                 {/* Properties Grid */}
                 {loading ? (
-                    <div className="loading-state">Loading properties...</div>
+                    <div className="loading-state">
+                        <div className="spinner"></div>
+                        <p>Curating your listings...</p>
+                    </div>
                 ) : properties.length === 0 ? (
-                    <div className="empty-state">
+                    <div className="bento-item empty-state">
                         <span className="empty-icon">🏠</span>
-                        <h3>No properties found</h3>
-                        <p>Try adjusting your filters or add new properties.</p>
+                        <h3>No listings found</h3>
+                        <p>Try refining your search criteria or add new properties.</p>
+                        <Link to="/add-property" className="btn-primary-small">Add Property</Link>
                     </div>
                 ) : (
-                    <div className="properties-grid">
+                    <div className="properties-grid" ref={gridRef}>
                         {properties.map((property) => (
                             <PropertyCard
                                 key={property._id}

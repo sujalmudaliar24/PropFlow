@@ -1,255 +1,216 @@
 .inventory-page {
-    max-width: 1200px;
-    margin: 0 auto;
     padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
 }
 
 .inventory-header h1 {
-    font-size: 1.6rem;
-    color: #fff;
-    margin: 0;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--p9);
 }
 
 .inventory-header p {
-    color: rgba(255, 255, 255, 0.5);
-    margin: 0.25rem 0 1.5rem;
-    font-size: 0.9rem;
+    color: var(--p7);
+    font-size: 1.1rem;
+    margin-bottom: 0;
 }
 
-/* Filters */
+.inventory-stats-bento {
+    background: var(--p9);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    text-align: right;
+    box-shadow: var(--shadow-md);
+}
+
+.inv-stat-val {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+}
+
+.inv-stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--p3);
+}
+
 .filters-panel {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 16px;
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
+    background: white;
+    border: 1px solid var(--p2);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .filter-row {
     display: flex;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
+    gap: 1.5rem;
+    align-items: flex-end;
     flex-wrap: wrap;
 }
 
-.filter-row:last-child {
-    margin-bottom: 0;
+.main-search .search-group {
+    flex: 1;
 }
 
 .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     flex: 1;
-    min-width: 140px;
-}
-
-.search-group {
-    flex: 1 1 100%;
+    min-width: 200px;
 }
 
 .filter-group label {
-    display: block;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--p7);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.3rem;
+    letter-spacing: 1px;
+}
+
+.filter-search {
+    width: 100%;
+    padding: 1.25rem 1.5rem !important;
+    border-radius: 16px !important;
+    background: var(--p1) !important;
+    border: 2px solid transparent !important;
+    font-size: 1.1rem !important;
+    font-weight: 600;
+    color: var(--p9);
+}
+
+.filter-search:focus {
+    border-color: var(--p4) !important;
+    background: white !important;
+    box-shadow: var(--shadow-md);
+}
+
+.grid-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    width: 100%;
+    gap: 1.5rem;
 }
 
 .filter-group input,
-.filter-group select,
-.filter-search {
-    width: 100%;
-    padding: 0.6rem 0.85rem;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #fff;
-    font-size: 0.85rem;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
+.filter-group select {
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid var(--p2);
+    color: var(--p9);
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .filter-group input:focus,
-.filter-group select:focus,
-.filter-search:focus {
+.filter-group select:focus {
+    border-color: var(--p5);
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: var(--p1);
 }
 
-.filter-group select option {
-    background: #1a1a2e;
-    color: #fff;
-}
-
-.filter-search {
-    font-size: 0.95rem;
-    padding: 0.85rem 1rem;
-}
-
-.filter-actions {
+.share-bar-bento {
+    background: var(--p9);
+    color: white;
+    padding: 1.5rem 2.5rem;
+    border-radius: 24px;
     display: flex;
-    align-items: flex-end;
-}
-
-.btn-clear {
-    padding: 0.6rem 1.25rem;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-clear:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-}
-
-/* Share bar */
-.share-bar {
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    background: rgba(37, 211, 102, 0.08);
-    border: 1px solid rgba(37, 211, 102, 0.2);
-    border-radius: 14px;
-    margin-bottom: 1.5rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 600;
-    font-size: 0.9rem;
+    margin-bottom: 2.5rem;
+    box-shadow: var(--shadow-lg);
+    border-left: 8px solid var(--p5);
 }
 
-.btn-whatsapp {
-    padding: 0.6rem 1.25rem;
-    background: linear-gradient(135deg, #25d366, #128c7e);
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
+.share-actions {
+    display: flex;
+    gap: 1.25rem;
 }
 
-.btn-whatsapp:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-}
-
-.btn-clear-selection {
-    padding: 0.6rem 1.25rem;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-clear-selection:hover {
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Properties grid */
 .properties-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .loading-state,
 .empty-state {
     text-align: center;
-    padding: 4rem 2rem;
-    color: rgba(255, 255, 255, 0.5);
+    padding: 6rem 2rem;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid var(--p2);
 }
 
 .empty-icon {
-    font-size: 4rem;
-    display: block;
-    margin-bottom: 1rem;
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
 }
 
 .empty-state h3 {
-    color: #fff;
-    margin: 0 0 0.5rem;
+    color: var(--p9);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
-/* Modal */
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
+    background: rgba(8, 28, 21, 0.4);
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 200;
-    padding: 1rem;
+    padding: 1.5rem;
 }
 
 .modal-content {
-    background: #1a1a2e;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 2rem;
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem;
     width: 100%;
-    max-width: 500px;
-    max-height: 80vh;
+    max-width: 600px;
+    max-height: 85vh;
     overflow-y: auto;
+    box-shadow: var(--shadow-lg);
 }
 
 .modal-content h2 {
-    color: #fff;
-    margin: 0 0 1.5rem;
-    font-size: 1.3rem;
-}
-
-.modal-actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-}
-
-.btn-cancel {
-    padding: 0.6rem 1.25rem;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-cancel:hover {
-    background: rgba(255, 255, 255, 0.12);
+    color: var(--p9);
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
 }
 
 .share-preview {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 1rem;
-    max-height: 300px;
-    overflow-y: auto;
+    background: var(--p1);
+    border: 1px solid var(--p2);
+    border-radius: 16px;
+    padding: 1.5rem;
 }
 
 .share-preview pre {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.85rem;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    margin: 0;
-    font-family: inherit;
+    color: var(--p9);
+    font-weight: 500;
 }
 
 @media (max-width: 768px) {

@@ -34,13 +34,17 @@ function AppRoutes() {
   );
 }
 
+import { ThemeProvider } from './context/ThemeContext';
+
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </Router>
+    </ThemeProvider>
   );
 }
 

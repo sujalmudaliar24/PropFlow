@@ -1,103 +1,104 @@
 .pricing-page {
-    max-width: 1100px;
-    margin: 0 auto;
     padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .pricing-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
 }
 
 .pricing-header h1 {
-    font-size: 2rem;
-    color: #fff;
-    margin: 0 0 0.5rem;
+    font-size: 3rem;
+    color: var(--p9);
+    margin-bottom: 1rem;
 }
 
 .pricing-header p {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 1rem;
+    color: var(--p7);
+    font-size: 1.2rem;
 }
 
 .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
     align-items: start;
 }
 
 .pricing-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 2rem;
+    background: white;
+    border: 1px solid var(--p2);
+    padding: 3rem 2.5rem;
+    border-radius: 24px;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .pricing-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--p4);
 }
 
 .pricing-card-highlighted {
-    border-color: rgba(102, 126, 234, 0.4);
-    background: rgba(102, 126, 234, 0.06);
-    transform: scale(1.02);
+    background: var(--p9);
+    color: white;
+    border: none;
+    transform: scale(1.05);
 }
 
 .pricing-card-highlighted:hover {
-    transform: scale(1.02) translateY(-4px);
+    transform: scale(1.05) translateY(-10px);
 }
 
 .pricing-badge {
     position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff;
-    padding: 0.25rem 1rem;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: var(--p3);
+    color: var(--p9);
+    padding: 0.4rem 1rem;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .plan-name {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 1rem;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin: 0 0 1rem;
 }
 
 .plan-price {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .price-amount {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 800;
-    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    color: inherit;
 }
 
 .price-period {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    opacity: 0.7;
+    color: inherit;
 }
 
 .plan-features {
     list-style: none;
     padding: 0;
-    margin: 0 0 2rem;
+    margin-bottom: 3rem;
+    flex: 1;
 }
 
 .plan-features li {
-    color: rgba(255, 255, 255, 0.7);
-    padding: 0.5rem 0;
     font-size: 0.9rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }

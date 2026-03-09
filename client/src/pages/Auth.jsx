@@ -31,9 +31,9 @@ const Login = () => {
         <div className="auth-container">
             <div className="auth-card">
                 <div className="auth-header">
-                    <div className="auth-logo">🏠</div>
+                    <div className="auth-logo">💎</div>
                     <h1>PropFlow</h1>
-                    <p>Real Estate Inventory Management</p>
+                    <p>Premium Real Estate Inventory</p>
                 </div>
                 <form onSubmit={handleSubmit} className="auth-form">
                     <h2>Welcome Back</h2>
@@ -100,9 +100,9 @@ const Register = () => {
         <div className="auth-container">
             <div className="auth-card">
                 <div className="auth-header">
-                    <div className="auth-logo">🏠</div>
+                    <div className="auth-logo">💎</div>
                     <h1>PropFlow</h1>
-                    <p>Real Estate Inventory Management</p>
+                    <p>Premium Real Estate Inventory</p>
                 </div>
                 <form onSubmit={handleSubmit} className="auth-form">
                     <h2>Create Account</h2>
