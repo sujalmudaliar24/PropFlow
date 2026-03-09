@@ -5,8 +5,26 @@ import User from '../models/User.js';
 // @route   POST /api/properties
 export const createProperty = async (req, res) => {
     try {
+        const propertyData = { ...req.body };
+
+        // Handle nested objects if sent as strings (common with FormData)
+        ['location', 'specifications', 'parking', 'pricing'].forEach(key => {
+            if (typeof propertyData[key] === 'string') {
+                try {
+                    propertyData[key] = JSON.parse(propertyData[key]);
+                } catch (e) {
+                    // fallback or handle error
+                }
+            }
+        });
+
+        // Handle uploaded files
+        if (req.files && req.files.length > 0) {
+            propertyData.images = req.files.map(file => `/uploads/properties/${file.filename}`);
+        }
+
         const property = await Property.create({
-            ...req.body,
+            ...propertyData,
             brokerId: req.user._id,
         });
 
@@ -73,36 +91,37 @@ export const searchProperties = async (req, res) => {
         // Text search (location + title)
         if (q) {
             filter.$or = [
-                { 'location.neighborhood': { $regex: q, $options: 'i' } },
+                { 'location.area': { $regex: q, $options: 'i' } },
+                { 'location.society': { $regex: q, $options: 'i' } },
                 { 'location.city': { $regex: q, $options: 'i' } },
                 { title: { $regex: q, $options: 'i' } },
+                { keywords: { $regex: q, $options: 'i' } },
             ];
         }
 
-        if (type) filter.type = type;
+        if (type) filter.propertyType = type;
         if (transactionType) filter.transactionType = transactionType;
-        if (furnishing) filter.furnishing = furnishing;
-        if (status) filter.status = status || 'Available';
 
-        if (neighborhood) {
-            filter['location.neighborhood'] = { $regex: neighborhood, $options: 'i' };
-        }
         if (city) {
             filter['location.city'] = { $regex: city, $options: 'i' };
+        }
+        if (neighborhood) {
+            filter['location.area'] = { $regex: neighborhood, $options: 'i' };
         }
 
         // Price range
         if (minPrice || maxPrice) {
-            filter.price = {};
-            if (minPrice) filter.price.$gte = Number(minPrice);
-            if (maxPrice) filter.price.$lte = Number(maxPrice);
+            const priceKey = transactionType === 'Rent' ? 'pricing.rentAmount' : 'pricing.cost';
+            filter[priceKey] = {};
+            if (minPrice) filter[priceKey].$gte = Number(minPrice);
+            if (maxPrice) filter[priceKey].$lte = Number(maxPrice);
         }
 
         // Area range
         if (minArea || maxArea) {
-            filter.carpetArea = {};
-            if (minArea) filter.carpetArea.$gte = Number(minArea);
-            if (maxArea) filter.carpetArea.$lte = Number(maxArea);
+            filter['specifications.carpetArea'] = {};
+            if (minArea) filter['specifications.carpetArea'].$gte = Number(minArea);
+            if (maxArea) filter['specifications.carpetArea'].$lte = Number(maxArea);
         }
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -210,18 +229,22 @@ export const generateWhatsAppMessage = async (req, res) => {
         message += `Here are some properties matching your requirements:\n\n`;
 
         properties.forEach((prop, index) => {
-            const priceFormatted = prop.price >= 10000000
-                ? `₹${(prop.price / 10000000).toFixed(2)} Cr`
-                : prop.price >= 100000
-                    ? `₹${(prop.price / 100000).toFixed(2)} Lac`
-                    : `₹${prop.price.toLocaleString('en-IN')}`;
+            const isRent = prop.transactionType === 'Rent';
+            const price = isRent ? prop.pricing.rentAmount : prop.pricing.cost;
+            const priceFormatted = price >= 10000000
+                ? `₹${(price / 10000000).toFixed(2)} Cr`
+                : price >= 100000
+                    ? `₹${(price / 100000).toFixed(2)} Lac`
+                    : `₹${price?.toLocaleString('en-IN')}`;
 
-            message += `*${index + 1}. ${prop.type} - ${prop.location.neighborhood}, ${prop.location.city}*\n`;
-            message += `   💰 Price: ${priceFormatted}\n`;
-            message += `   📐 Carpet Area: ${prop.carpetArea} sq.ft\n`;
-            if (prop.floor) message += `   🏢 Floor: ${prop.floor}/${prop.totalFloors || '-'}\n`;
-            message += `   🏷️ ${prop.transactionType} | ${prop.furnishing}\n`;
-            message += `   📍 Status: ${prop.status}\n\n`;
+            message += `*${index + 1}. ${prop.subType} in ${prop.location.society}*\n`;
+            message += `   📍 ${prop.location.area}, ${prop.location.city}\n`;
+            message += `   💰 ${isRent ? 'Rent' : 'Cost'}: ${priceFormatted}${isRent ? '/month' : ''}\n`;
+            message += `   📐 Carpet Area: ${prop.specifications.carpetArea} sq.ft\n`;
+            message += `   🏢 Floor: ${prop.specifications.floorNumber}/${prop.specifications.totalFloors}\n`;
+            message += `   🛏️ ${prop.specifications.bedrooms} BHK | 🚿 ${prop.specifications.bathrooms} Bath\n`;
+            message += `   🏷️ ${prop.propertyType} | ${prop.specifications.furnishingType}\n`;
+            message += `   ✨ Status: ${prop.status}\n\n`;
         });
 
         message += `_Shared via PropFlow_`;

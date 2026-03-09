@@ -4,9 +4,8 @@ import Navbar from '../components/Navbar';
 import PropertyCard from '../components/PropertyCard';
 import './Inventory.css';
 
-const PROPERTY_TYPES = ['All', '1RK', '1BHK', '2BHK', '3BHK', '4BHK', '5BHK', 'Penthouse', 'Villa', 'Plot', 'Commercial', 'Office', 'Shop'];
-const TRANSACTION_TYPES = ['All', 'Sale', 'Rent', 'Lease'];
-const FURNISHING_OPTIONS = ['All', 'Unfurnished', 'Semi-Furnished', 'Fully-Furnished'];
+const PROPERTY_TYPES = ['All', 'Residential', 'Commercial'];
+const TRANSACTION_TYPES = ['All', 'Sale', 'Rent'];
 
 const Inventory = () => {
     const [properties, setProperties] = useState([]);
@@ -22,7 +21,6 @@ const Inventory = () => {
         q: '',
         type: 'All',
         transactionType: 'All',
-        furnishing: 'All',
         minPrice: '',
         maxPrice: '',
         minArea: '',
@@ -38,7 +36,6 @@ const Inventory = () => {
             if (filters.q) params.q = filters.q;
             if (filters.type !== 'All') params.type = filters.type;
             if (filters.transactionType !== 'All') params.transactionType = filters.transactionType;
-            if (filters.furnishing !== 'All') params.furnishing = filters.furnishing;
             if (filters.minPrice) params.minPrice = filters.minPrice;
             if (filters.maxPrice) params.maxPrice = filters.maxPrice;
             if (filters.minArea) params.minArea = filters.minArea;
@@ -96,7 +93,7 @@ const Inventory = () => {
 
     const clearFilters = () => {
         setFilters({
-            q: '', type: 'All', transactionType: 'All', furnishing: 'All',
+            q: '', type: 'All', transactionType: 'All',
             minPrice: '', maxPrice: '', minArea: '', maxArea: '',
             neighborhood: '', city: '',
         });
@@ -117,7 +114,7 @@ const Inventory = () => {
                         <div className="filter-group search-group">
                             <input
                                 type="text"
-                                placeholder="🔍 Search by location or title..."
+                                placeholder="🔍 Search by society, area, or keywords..."
                                 value={filters.q}
                                 onChange={(e) => handleFilterChange('q', e.target.value)}
                                 className="filter-search"
@@ -126,7 +123,7 @@ const Inventory = () => {
                     </div>
                     <div className="filter-row">
                         <div className="filter-group">
-                            <label>Neighborhood</label>
+                            <label>Area / Society</label>
                             <input
                                 type="text"
                                 placeholder="e.g. Vile Parle"
@@ -144,7 +141,7 @@ const Inventory = () => {
                             />
                         </div>
                         <div className="filter-group">
-                            <label>Type</label>
+                            <label>Property Type</label>
                             <select value={filters.type} onChange={(e) => handleFilterChange('type', e.target.value)}>
                                 {PROPERTY_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                             </select>
@@ -153,12 +150,6 @@ const Inventory = () => {
                             <label>Transaction</label>
                             <select value={filters.transactionType} onChange={(e) => handleFilterChange('transactionType', e.target.value)}>
                                 {TRANSACTION_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-                            </select>
-                        </div>
-                        <div className="filter-group">
-                            <label>Furnishing</label>
-                            <select value={filters.furnishing} onChange={(e) => handleFilterChange('furnishing', e.target.value)}>
-                                {FURNISHING_OPTIONS.map((f) => <option key={f} value={f}>{f}</option>)}
                             </select>
                         </div>
                     </div>

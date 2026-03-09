@@ -3,79 +3,72 @@ import mongoose from 'mongoose';
 const propertySchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'Property title is required'],
         trim: true,
     },
     description: {
         type: String,
         trim: true,
     },
-    type: {
+    propertyType: {
         type: String,
         required: [true, 'Property type is required'],
-        enum: ['1RK', '1BHK', '2BHK', '3BHK', '4BHK', '5BHK', 'Penthouse', 'Villa', 'Plot', 'Commercial', 'Office', 'Shop', 'Other'],
+        enum: ['Residential', 'Commercial'],
+    },
+    subType: {
+        type: String,
+        required: [true, 'Sub-type is required'],
+        // enum: ['Villa', 'Apartment', 'Penthouse', 'Others', 'Office Space', 'Plot']
     },
     transactionType: {
         type: String,
-        enum: ['Sale', 'Rent', 'Lease'],
-        default: 'Sale',
-    },
-    price: {
-        type: Number,
-        required: [true, 'Price is required'],
-    },
-    carpetArea: {
-        type: Number,
-        required: [true, 'Carpet area is required'],
-    },
-    builtUpArea: {
-        type: Number,
+        enum: ['Sale', 'Rent'],
+        required: [true, 'Transaction type is required'],
     },
     location: {
-        neighborhood: {
+        city: { type: String, required: [true, 'City is required'], trim: true },
+        area: { type: String, required: [true, 'Area/Locality is required'], trim: true },
+        society: { type: String, required: [true, 'Society/Building name is required'], trim: true },
+        address: { type: String, required: [true, 'Address is required'], trim: true },
+        pincode: { type: String, required: [true, 'Pincode is required'], trim: true },
+        landmark: { type: String, trim: true },
+    },
+    specifications: {
+        carpetArea: { type: Number, required: [true, 'Carpet area is required'] },
+        builtUpArea: { type: Number },
+        floorNumber: { type: Number, required: [true, 'Floor number is required'] },
+        totalFloors: { type: Number, required: [true, 'Total floors is required'] },
+        bedrooms: { type: Number, required: [true, 'Number of bedrooms is required'] },
+        bathrooms: { type: Number, required: [true, 'Number of bathrooms is required'] },
+        balcony: { type: Number },
+        furnishingType: {
             type: String,
-            required: [true, 'Neighborhood is required'],
-            trim: true,
-        },
-        city: {
-            type: String,
-            required: [true, 'City is required'],
-            trim: true,
-        },
-        state: {
-            type: String,
-            trim: true,
-        },
-        pincode: {
-            type: String,
-            trim: true,
+            required: [true, 'Furnishing type is required'],
+            enum: ['Unfurnished', 'Semi Furnished', 'Fully Furnished'],
         },
     },
-    floor: {
-        type: Number,
+    parking: {
+        type: {
+            type: String,
+            enum: ['basement', 'ramp', 'stilt', 'automatic', 'open'],
+        },
+        count: { type: Number },
     },
-    totalFloors: {
-        type: Number,
+    pricing: {
+        // For Rent
+        rentAmount: { type: Number },
+        securityDeposit: { type: Number },
+        // For Sale
+        cost: { type: Number },
+        negotiable: { type: Boolean, default: true },
+        // Common
+        brokerage: { type: Number, required: [true, 'Brokerage is required'] },
     },
-    furnishing: {
-        type: String,
-        enum: ['Unfurnished', 'Semi-Furnished', 'Fully-Furnished'],
-        default: 'Unfurnished',
-    },
+    keywords: [String],
+    images: [String],
     status: {
         type: String,
         enum: ['Available', 'Sold', 'Rented', 'Under Negotiation'],
         default: 'Available',
-    },
-    amenities: [String],
-    images: [String],
-    contactName: {
-        type: String,
-        trim: true,
-    },
-    contactPhone: {
-        type: String,
-        trim: true,
     },
     brokerId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -85,10 +78,11 @@ const propertySchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Indexes for search performance
-propertySchema.index({ 'location.neighborhood': 'text', 'location.city': 'text', title: 'text' });
-propertySchema.index({ price: 1 });
-propertySchema.index({ carpetArea: 1 });
-propertySchema.index({ type: 1 });
+propertySchema.index({ 'location.society': 'text', 'location.area': 'text', 'location.city': 'text', title: 'text', keywords: 'text' });
+propertySchema.index({ 'pricing.cost': 1 });
+propertySchema.index({ 'pricing.rentAmount': 1 });
+propertySchema.index({ 'specifications.carpetArea': 1 });
+propertySchema.index({ propertyType: 1 });
 propertySchema.index({ brokerId: 1 });
 propertySchema.index({ status: 1 });
 
