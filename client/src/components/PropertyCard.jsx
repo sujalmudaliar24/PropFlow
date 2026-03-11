@@ -11,7 +11,9 @@ const PropertyCard = ({ property, selected, onSelect, onDelete }) => {
             ? `₹${(price / 100000).toFixed(2)} Lac`
             : `₹${price?.toLocaleString('en-IN') || 'N/A'}`;
 
-    const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const apiBase = import.meta.env.VITE_API_BASE_URL || apiUrl.replace(/\/api\/?$/, '');
+    
     const imageUrl = property.images && property.images.length > 0
         ? `${apiBase}${property.images[0]}`
         : 'https://via.placeholder.com/400x300?text=No+Image';
