@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser, registerUser, verifyOtp } from '../services/api';
+import { verifyOtp, loginUser, registerUser } from '../services/api';
 import { useAuth } from '../hooks/useAuthContext';
 import { CountryDropdown } from 'react-country-region-selector';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import './Auth.css';
 
 const Login = () => {
@@ -183,7 +185,14 @@ const Register = () => {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="phone">Phone</label>
-                                <input id="phone" name="phone" value={form.phone} onChange={handleChange} placeholder="+91 98765 43210" />
+                                <PhoneInput
+                                    international
+                                    defaultCountry="IN"
+                                    value={form.phone}
+                                    onChange={(value) => setForm({ ...form, phone: value })}
+                                    placeholder="+91 98765 43210"
+                                    id="phone"
+                                />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="organization">Organization</label>

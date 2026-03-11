@@ -104,6 +104,42 @@
     color: var(--p4);
 }
 
+/* Override default input styles for PhoneInput */
+.form-group .PhoneInput {
+    display: flex;
+    align-items: center;
+    background: var(--p1);
+    border: 1px solid transparent;
+    border-radius: 14px;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.form-group .PhoneInput:focus-within {
+    border-color: var(--p5);
+    background: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.form-group .PhoneInputCountry {
+    padding-left: 1.25rem;
+    margin-right: 0.5rem;
+}
+
+.form-group .PhoneInputInput {
+    padding-left: 0.5rem;
+    border-radius: 0 14px 14px 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.form-group .PhoneInputInput:focus {
+    box-shadow: none;
+    background: transparent;
+    border-color: transparent;
+}
+
 .auth-btn {
     width: 100%;
     padding: 1.1rem;
