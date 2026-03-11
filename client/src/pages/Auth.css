@@ -31,6 +31,7 @@
     font-size: 2.2rem;
     margin: 0;
     background: linear-gradient(135deg, var(--p7), var(--p5));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 800;
@@ -75,7 +76,8 @@
     letter-spacing: 1px;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
     width: 100%;
     padding: 1rem 1.25rem;
     background: var(--p1);
@@ -86,38 +88,41 @@
     font-weight: 500;
     transition: all 0.3s ease;
     box-sizing: border-box;
+    appearance: none; /* helps select look like normal input */
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
     outline: none;
     border-color: var(--p5);
     background: white;
     box-shadow: var(--shadow-sm);
 }
 
-.form-group input::placeholder {
+.form-group input::placeholder,
+.form-group select::placeholder {
     color: var(--p4);
 }
 
 .auth-btn {
     width: 100%;
     padding: 1.1rem;
-    background: var(--p9);
-    border: none;
+    background: linear-gradient(135deg, var(--p9), var(--p7));
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 14px;
     color: white;
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--btn-transition);
     margin-top: 1rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 10px 20px -5px rgba(8, 28, 21, 0.3);
 }
 
 .auth-btn:hover:not(:disabled) {
-    background: var(--p7);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px -10px rgba(8, 28, 21, 0.4);
+    filter: brightness(1.1);
 }
 
 .auth-btn:disabled {

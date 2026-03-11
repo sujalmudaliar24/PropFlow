@@ -6,22 +6,16 @@ const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    // TEMPORARY: bypass auth with details of a dummy user
-    const [user, setUser] = useState({
-        _id: '000000000000000000000000',
-        name: 'Demo User',
-        email: 'demo@propflow.com',
-        role: 'broker',
-        plan: 'Enterprise'
-    });
-    const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true); // Start loading true to check token
 
     useEffect(() => {
-        /*
         const token = localStorage.getItem('token');
         if (token) {
             getProfile()
-                .then((res) => setUser(res.data))
+                .then((res) => {
+                    setUser(res.data);
+                })
                 .catch(() => {
                     localStorage.removeItem('token');
                     setUser(null);
@@ -30,21 +24,16 @@ export const AuthProvider = ({ children }) => {
         } else {
             setLoading(false);
         }
-        */
     }, []);
 
     const login = (userData) => {
-        /*
         localStorage.setItem('token', userData.token);
         setUser(userData);
-        */
     };
 
     const logout = () => {
-        /*
         localStorage.removeItem('token');
         setUser(null);
-        */
     };
 
     return (

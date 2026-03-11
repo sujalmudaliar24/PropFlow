@@ -128,6 +128,32 @@
     background: var(--p1);
 }
 
+.action-group {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.btn-text-only {
+    padding: 0.8rem 1.5rem;
+    background: var(--p1);
+    color: var(--p7);
+    border: 1.5px dashed var(--p3);
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: var(--btn-transition);
+    width: 100%;
+}
+
+.btn-text-only:hover {
+    background: white;
+    color: var(--p9);
+    border-color: var(--p5);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
 .share-bar-bento {
     background: var(--p9);
     color: white;
@@ -144,6 +170,40 @@
 .share-actions {
     display: flex;
     gap: 1.25rem;
+}
+
+.share-actions button, .btn-whatsapp, .btn-clear-selection {
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: var(--btn-transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.btn-whatsapp {
+    background: #25D366;
+    color: white;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.btn-whatsapp:hover {
+    background: #22c35e;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+}
+
+.btn-clear-selection {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-clear-selection:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
 .properties-grid {

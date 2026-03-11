@@ -23,9 +23,12 @@
   --accent: var(--p5);
 
   --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --btn-transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   --shadow-sm: 0 2px 4px rgba(8, 28, 21, 0.04);
   --shadow-md: 0 10px 15px rgba(8, 28, 21, 0.06);
   --shadow-lg: 0 20px 25px rgba(8, 28, 21, 0.1);
+  --btn-shadow: 0 10px 20px -5px rgba(45, 106, 79, 0.3);
+  --btn-shadow-hover: 0 15px 30px -8px rgba(45, 106, 79, 0.4);
 
   font-size: 18px;
   /* Increased base font size */
@@ -77,7 +80,56 @@ button {
   font-family: inherit;
   border: none;
   outline: none;
-  transition: var(--transition);
+  transition: var(--btn-transition);
+  position: relative;
+  overflow: hidden;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+.btn-premium {
+  background: linear-gradient(135deg, var(--p8), var(--p6));
+  color: white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: var(--btn-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-premium:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--btn-shadow-hover);
+  filter: brightness(1.1);
+}
+
+.btn-premium::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+.btn-premium:hover::after {
+  left: 100%;
+  transition: 0.7s;
 }
 
 /* Custom Scrollbar */

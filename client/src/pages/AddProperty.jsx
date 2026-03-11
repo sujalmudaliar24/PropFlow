@@ -266,6 +266,10 @@ const AddProperty = () => {
                                 <label>Area / Locality</label>
                                 <input name="location.area" value={form.location.area} onChange={handleChange} placeholder="Vile Parle" required />
                             </div>
+                            <div className="form-group">
+                                <label>Pincode</label>
+                                <input name="location.pincode" value={form.location.pincode} onChange={handleChange} placeholder="400057" required />
+                            </div>
                         </div>
                         <div className="form-group">
                             <label>Society / Project Name</label>
@@ -288,6 +292,10 @@ const AddProperty = () => {
                             <div className="form-group">
                                 <label>Bedrooms (BHK)</label>
                                 <input name="specifications.bedrooms" type="number" value={form.specifications.bedrooms} onChange={handleChange} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Bathrooms</label>
+                                <input name="specifications.bathrooms" type="number" value={form.specifications.bathrooms} onChange={handleChange} required />
                             </div>
                             <div className="form-group">
                                 <label>Floor Info</label>

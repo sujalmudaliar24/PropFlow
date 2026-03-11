@@ -109,26 +109,41 @@
 
 .plan-btn {
     width: 100%;
-    padding: 0.85rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: none;
-    border-radius: 12px;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--p7), var(--p4));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 14px;
     color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.1rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--btn-transition);
 }
 
 .plan-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(45, 106, 79, 0.3);
+    filter: brightness(1.1);
+}
+
+.pricing-card-highlighted .plan-btn {
+    background: linear-gradient(135deg, var(--p4), var(--p2));
+    color: var(--p9);
+    animation: pulse-premium 3s infinite;
+}
+
+@keyframes pulse-premium {
+    0% { box-shadow: 0 0 0 0 rgba(116, 198, 157, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(116, 198, 157, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(116, 198, 157, 0); }
 }
 
 .plan-btn-current {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     cursor: default;
+    color: rgba(255, 255, 255, 0.6) !important;
+    animation: none !important;
 }
 
 .plan-btn:disabled {

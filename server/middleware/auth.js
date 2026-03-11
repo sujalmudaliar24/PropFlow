@@ -3,11 +3,6 @@ import User from '../models/User.js';
 
 // Protect routes - verify JWT token
 export const protect = async (req, res, next) => {
-    // TEMPORARY: bypass auth
-    req.user = { _id: '000000000000000000000000', role: 'broker', plan: 'Enterprise' };
-    return next();
-
-    /*
     try {
         let token;
 
@@ -30,15 +25,10 @@ export const protect = async (req, res, next) => {
     } catch (error) {
         return res.status(401).json({ message: 'Not authorized, token invalid' });
     }
-    */
 };
 
 // Check plan limits before adding properties
 export const checkPlanLimits = async (req, res, next) => {
-    // TEMPORARY: bypass limits
-    return next();
-
-    /*
     try {
         const user = req.user;
 
@@ -54,5 +44,4 @@ export const checkPlanLimits = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({ message: 'Server error checking plan limits' });
     }
-    */
 };

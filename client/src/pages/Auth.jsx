@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser, registerUser } from '../services/api';
 import { useAuth } from '../hooks/useAuthContext';
+import { CountryDropdown } from 'react-country-region-selector';
 import './Auth.css';
 
 const Login = () => {
@@ -73,7 +74,7 @@ const Login = () => {
 };
 
 const Register = () => {
-    const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', organization: '' });
+    const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', organization: '', country: 'India' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
@@ -118,6 +119,15 @@ const Register = () => {
                     <div className="form-group">
                         <label htmlFor="reg-password">Password</label>
                         <input id="reg-password" name="password" type="password" value={form.password} onChange={handleChange} placeholder="Min 6 characters" required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="country">Country</label>
+                        <CountryDropdown
+                            id="country"
+                            value={form.country}
+                            onChange={(val) => setForm({ ...form, country: val })}
+                            defaultOptionLabel="Select Country"
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="phone">Phone</label>

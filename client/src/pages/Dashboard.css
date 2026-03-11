@@ -139,31 +139,39 @@
 }
 
 .btn-primary-bento {
-    background: var(--p3);
-    color: var(--p9);
+    background: linear-gradient(135deg, var(--p4), var(--p6));
+    color: white;
     padding: 1rem 2rem;
-    border-radius: 12px;
+    border-radius: 14px;
     font-weight: 700;
-    box-shadow: 0 4px 15px rgba(116, 198, 157, 0.3);
+    box-shadow: 0 8px 20px rgba(64, 145, 108, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-primary-bento:hover {
     background: white;
-    transform: scale(1.05);
+    color: var(--p9);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(64, 145, 108, 0.3);
 }
 
 .btn-secondary-bento {
-    background: var(--p2);
+    background: rgba(216, 243, 220, 0.5);
+    backdrop-filter: blur(5px);
     color: var(--p8);
     padding: 0.8rem 1.5rem;
-    border-radius: 10px;
+    border-radius: 12px;
     font-weight: 600;
     text-align: center;
+    border: 1px solid var(--p2);
+    transition: var(--btn-transition);
 }
 
 .btn-secondary-bento:hover {
     background: var(--p4);
+    border-color: var(--p4);
     color: white;
+    transform: translateY(-2px);
 }
 
 @media (max-width: 1024px) {

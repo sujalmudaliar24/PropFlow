@@ -180,18 +180,22 @@
 }
 
 .btn-delete {
-    background: none;
-    border: 1px solid #fee2e2;
+    background: transparent;
+    border: 1.5px solid #fee2e2;
     color: #ef4444;
-    padding: 0.4rem 0.8rem;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: var(--btn-transition);
 }
 
 .btn-delete:hover {
-    background: #fef2f2;
-    border-color: #fca5a5;
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
 }
 
 @media (max-width: 480px) {

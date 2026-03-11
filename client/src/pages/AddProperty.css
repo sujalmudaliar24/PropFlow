@@ -272,22 +272,22 @@
 .btn-submit-bento {
     width: 100%;
     padding: 1.25rem;
-    background: var(--p9);
+    background: linear-gradient(135deg, var(--p9), var(--p7));
     color: white;
-    border: none;
-    border-radius: 14px;
-    font-size: 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    font-size: 1.15rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-md);
+    transition: var(--btn-transition);
+    box-shadow: 0 10px 25px rgba(8, 28, 21, 0.2);
     margin-top: 2rem;
 }
 
 .btn-submit-bento:hover:not(:disabled) {
-    background: var(--p7);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 15px 35px rgba(8, 28, 21, 0.3);
+    filter: brightness(1.1);
 }
 
 .btn-submit-bento:disabled {
