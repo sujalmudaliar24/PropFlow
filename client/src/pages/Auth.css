@@ -1,3 +1,4 @@
+/* ─── Animated Background ─── */
 .auth-container {
     min-height: 100vh;
     display: flex;
@@ -5,18 +6,95 @@
     justify-content: center;
     background-color: var(--bg-main);
     padding: 1rem;
+    position: relative;
+    overflow: hidden;
 }
 
+.auth-bg-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    filter: blur(60px);
+}
+
+.shape-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--p5);
+    top: -100px;
+    right: -80px;
+    animation: float1 12s ease-in-out infinite;
+}
+
+.shape-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--p3);
+    bottom: -80px;
+    left: -60px;
+    animation: float2 15s ease-in-out infinite;
+}
+
+.shape-3 {
+    width: 200px;
+    height: 200px;
+    background: var(--p7);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: float3 10s ease-in-out infinite;
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-40px, 60px); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(50px, -40px); }
+}
+
+@keyframes float3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.3); }
+}
+
+/* ─── Card ─── */
 .auth-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--p2);
     border-radius: 28px;
     padding: 3rem;
     width: 100%;
     max-width: 480px;
     box-shadow: var(--shadow-lg);
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Header ─── */
 .auth-header {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -25,6 +103,12 @@
 .auth-logo {
     font-size: 3.5rem;
     margin-bottom: 0.5rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
 }
 
 .auth-header h1 {
@@ -44,6 +128,7 @@
     font-weight: 500;
 }
 
+/* ─── Form ─── */
 .auth-form h2 {
     font-size: 1.6rem;
     color: var(--p9);
@@ -51,17 +136,43 @@
     font-family: 'Outfit', sans-serif;
 }
 
-.auth-error {
-    background: #fee2e2;
-    border: 1px solid #fca5a5;
-    color: #ef4444;
+/* ─── Alerts ─── */
+.auth-error,
+.auth-success {
     padding: 0.85rem 1.25rem;
     border-radius: 12px;
     font-size: 0.9rem;
     margin-bottom: 1.5rem;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: fadeIn 0.3s ease;
 }
 
+.auth-error {
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #ef4444;
+}
+
+.auth-success {
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+
+.alert-icon {
+    flex-shrink: 0;
+    font-weight: 800;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Form Groups ─── */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -88,7 +199,7 @@
     font-weight: 500;
     transition: all 0.3s ease;
     box-sizing: border-box;
-    appearance: none; /* helps select look like normal input */
+    appearance: none;
 }
 
 .form-group input:focus,
@@ -104,7 +215,249 @@
     color: var(--p4);
 }
 
-/* Override default input styles for PhoneInput */
+/* ─── Password Toggle ─── */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 3rem;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--p6);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: var(--p8);
+    background: var(--p2);
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) scale(0.92);
+}
+
+/* ─── OTP Section ─── */
+.otp-section {
+    animation: fadeIn 0.4s ease;
+}
+
+.otp-subtitle {
+    color: var(--p7);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.otp-subtitle strong {
+    color: var(--p9);
+}
+
+/* ─── OTP Digit Boxes ─── */
+.otp-input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.otp-box {
+    width: 52px;
+    height: 60px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: 'Outfit', monospace;
+    color: var(--p9);
+    background: var(--p1);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    transition: all 0.25s ease;
+    caret-color: var(--p5);
+}
+
+.otp-box:focus {
+    outline: none;
+    border-color: var(--p5);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(82, 183, 136, 0.15);
+    transform: translateY(-2px);
+}
+
+.otp-box:not(:placeholder-shown) {
+    border-color: var(--p4);
+}
+
+/* ─── Timer Row ─── */
+.otp-timer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.otp-timer {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--p7);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--p1);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.otp-timer.timer-warning {
+    color: #dc2626;
+    background: #fee2e2;
+    animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* ─── Resend Button ─── */
+.resend-btn {
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--p3);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--p4);
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+}
+
+.resend-btn.active {
+    color: var(--p7);
+    border-color: var(--p5);
+    cursor: pointer;
+}
+
+.resend-btn.active:hover {
+    background: var(--p1);
+    color: var(--p9);
+    transform: translateY(-1px);
+}
+
+.resend-btn.active:active {
+    transform: scale(0.96);
+}
+
+/* ─── Back Link ─── */
+.back-link {
+    background: none;
+    border: none;
+    color: var(--p6);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.3rem 0;
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.2s ease;
+}
+
+.back-link:hover {
+    color: var(--p9);
+    transform: translateX(-3px);
+}
+
+.back-link:active {
+    transform: translateX(-3px) scale(0.96);
+}
+
+/* ─── Submit Button ─── */
+.auth-btn {
+    width: 100%;
+    padding: 1.1rem;
+    background: linear-gradient(135deg, var(--p9), var(--p7));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--btn-transition);
+    margin-top: 1rem;
+    box-shadow: 0 10px 20px -5px rgba(8, 28, 21, 0.3);
+}
+
+.auth-btn:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px -10px rgba(8, 28, 21, 0.4);
+    filter: brightness(1.1);
+}
+
+.auth-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+}
+
+/* ─── Spinner ─── */
+.btn-spinner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ─── Switch Link ─── */
+.auth-switch {
+    text-align: center;
+    color: var(--p7);
+    font-size: 0.95rem;
+    margin-top: 2rem;
+}
+
+.auth-switch a {
+    color: var(--p5);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.auth-switch a:hover {
+    color: var(--p7);
+    text-decoration: underline;
+}
+
+/* ─── PhoneInput Overrides ─── */
 .form-group .PhoneInput {
     display: flex;
     align-items: center;
@@ -140,50 +493,7 @@
     border-color: transparent;
 }
 
-.auth-btn {
-    width: 100%;
-    padding: 1.1rem;
-    background: linear-gradient(135deg, var(--p9), var(--p7));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 14px;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: var(--btn-transition);
-    margin-top: 1rem;
-    box-shadow: 0 10px 20px -5px rgba(8, 28, 21, 0.3);
-}
-
-.auth-btn:hover:not(:disabled) {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 15px 30px -10px rgba(8, 28, 21, 0.4);
-    filter: brightness(1.1);
-}
-
-.auth-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.auth-switch {
-    text-align: center;
-    color: var(--p7);
-    font-size: 0.95rem;
-    margin-top: 2rem;
-}
-
-.auth-switch a {
-    color: var(--p5);
-    text-decoration: none;
-    font-weight: 700;
-}
-
-.auth-switch a:hover {
-    color: var(--p7);
-    text-decoration: underline;
-}
-
+/* ─── Responsive ─── */
 @media (max-width: 540px) {
     .auth-card {
         padding: 2.5rem 1.5rem;
@@ -191,5 +501,21 @@
 
     .auth-header h1 {
         font-size: 2rem;
+    }
+
+    .otp-box {
+        width: 44px;
+        height: 52px;
+        font-size: 1.3rem;
+    }
+
+    .otp-input-group {
+        gap: 7px;
+    }
+
+    .otp-timer-row {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
     }
 }

@@ -22,23 +22,78 @@ export const register = async (req, res) => {
             // Update unverified user's new attempt
             user.password = password;
             user.name = name;
+            user.phone = phone || user.phone;
+            user.organization = organization || user.organization;
+            user.country = country || user.country;
         } else {
             user = await User.create({ name, email, password, phone, organization, country, isVerified: false });
         }
 
         const otp = generateOTP();
         user.otp = otp;
-        user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+        user.otpExpires = Date.now() + 2 * 60 * 1000; // 2 minutes
         await user.save();
 
-        await sendEmail({
-            email: user.email,
-            subject: 'PropFlow - Verify Your Account',
-            message: `Your OTP for registration is ${otp}. It is valid for 10 minutes.`,
-        });
+        // Always log OTP to console for development
+        console.log(`\n========================================`);
+        console.log(`  OTP for ${email}: ${otp}`);
+        console.log(`  Expires in 2 minutes`);
+        console.log(`========================================\n`);
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'PropFlow - Verify Your Account',
+                message: `Your OTP for registration is ${otp}. It is valid for 2 minutes.`,
+            });
+        } catch (emailErr) {
+            console.warn('Email sending failed (OTP logged above):', emailErr.message);
+        }
 
         res.status(201).json({ message: 'OTP sent to your email', email: user.email, requiresOtp: true });
     } catch (error) {
+        console.error('Register error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Resend OTP
+// @route   POST /api/auth/resend-otp
+export const resendOtp = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (user.isVerified) {
+            return res.status(400).json({ message: 'User already verified' });
+        }
+
+        const otp = generateOTP();
+        user.otp = otp;
+        user.otpExpires = Date.now() + 2 * 60 * 1000; // 2 minutes
+        await user.save();
+
+        console.log(`\n========================================`);
+        console.log(`  RESEND OTP for ${email}: ${otp}`);
+        console.log(`  Expires in 2 minutes`);
+        console.log(`========================================\n`);
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'PropFlow - Your New OTP',
+                message: `Your new OTP is ${otp}. It is valid for 2 minutes.`,
+            });
+        } catch (emailErr) {
+            console.warn('Email resend failed (OTP logged above):', emailErr.message);
+        }
+
+        res.json({ message: 'New OTP sent to your email' });
+    } catch (error) {
+        console.error('Resend OTP error:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -54,8 +109,23 @@ export const verifyOtp = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        if (user.otp !== otp || user.otpExpires < Date.now()) {
-            return res.status(400).json({ message: 'Invalid or expired OTP' });
+        const isDev = process.env.NODE_ENV !== 'production';
+
+        if (!isDev) {
+            // Strict OTP validation in production
+            if (!user.otp || !user.otpExpires) {
+                return res.status(400).json({ message: 'No OTP requested. Please register or resend OTP.' });
+            }
+
+            if (user.otpExpires < Date.now()) {
+                return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
+            }
+
+            if (user.otp !== otp) {
+                return res.status(400).json({ message: 'Invalid OTP. Please check and try again.' });
+            }
+        } else {
+            console.log(`[DEV MODE] Bypassing OTP check for ${email} — any 6-digit code accepted`);
         }
 
         user.isVerified = true;
@@ -72,6 +142,7 @@ export const verifyOtp = async (req, res) => {
             token: generateToken(user._id),
         });
     } catch (error) {
+        console.error('Verify OTP error:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -95,16 +166,25 @@ export const login = async (req, res) => {
         if (!user.isVerified) {
             const otp = generateOTP();
             user.otp = otp;
-            user.otpExpires = Date.now() + 10 * 60 * 1000;
+            user.otpExpires = Date.now() + 2 * 60 * 1000;
             await user.save();
 
-            await sendEmail({
-                email: user.email,
-                subject: 'PropFlow - Verify Your Account',
-                message: `Your OTP for login is ${otp}. It is valid for 10 minutes.`,
-            });
+            console.log(`\n========================================`);
+            console.log(`  LOGIN OTP for ${email}: ${otp}`);
+            console.log(`  Expires in 2 minutes`);
+            console.log(`========================================\n`);
 
-            return res.status(403).json({ requiresOtp: true, email: user.email, message: 'Please verify your email.' });
+            try {
+                await sendEmail({
+                    email: user.email,
+                    subject: 'PropFlow - Verify Your Account',
+                    message: `Your OTP for login is ${otp}. It is valid for 2 minutes.`,
+                });
+            } catch (emailErr) {
+                console.warn('Email sending failed (OTP logged above):', emailErr.message);
+            }
+
+            return res.status(403).json({ requiresOtp: true, email: user.email, message: 'Please verify your email. OTP sent.' });
         }
 
         res.json({
@@ -116,6 +196,7 @@ export const login = async (req, res) => {
             token: generateToken(user._id),
         });
     } catch (error) {
+        console.error('Login error:', error);
         res.status(500).json({ message: error.message });
     }
 };

@@ -227,30 +227,39 @@ const AddProperty = () => {
                         <h3>Type & Transaction</h3>
                         <div className="form-group">
                             <label>Property Category</label>
-                            <select name="propertyType" value={form.propertyType} onChange={handleChange}>
-                                {PROPERTY_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                            </select>
+                            <CustomDropdown
+                                options={PROPERTY_TYPES}
+                                value={form.propertyType}
+                                onChange={(val) => {
+                                    setForm(prev => ({
+                                        ...prev,
+                                        propertyType: val,
+                                        subType: SUB_TYPES[val][0],
+                                    }));
+                                }}
+                                icons={{ Residential: '🏠', Commercial: '🏢' }}
+                            />
                         </div>
                         <div className="form-group">
                             <label>Sub Type</label>
-                            <select name="subType" value={form.subType} onChange={handleChange}>
-                                {SUB_TYPES[form.propertyType].map(t => <option key={t} value={t}>{t}</option>)}
-                            </select>
+                            <CustomDropdown
+                                options={SUB_TYPES[form.propertyType]}
+                                value={form.subType}
+                                onChange={(val) => setForm(prev => ({ ...prev, subType: val }))}
+                                icons={{
+                                    Villa: '🏡', Apartment: '🏬', Penthouse: '🌇', Others: '🏗️',
+                                    'Office Space': '💼', Plot: '📐',
+                                }}
+                            />
                         </div>
                         <div className="form-group">
                             <label>Listing For</label>
-                            <div className="transaction-toggle">
-                                <button
-                                    type="button"
-                                    className={form.transactionType === 'Sale' ? 'active' : ''}
-                                    onClick={() => setForm(prev => ({ ...prev, transactionType: 'Sale' }))}
-                                >Sale</button>
-                                <button
-                                    type="button"
-                                    className={form.transactionType === 'Rent' ? 'active' : ''}
-                                    onClick={() => setForm(prev => ({ ...prev, transactionType: 'Rent' }))}
-                                >Rent</button>
-                            </div>
+                            <CustomDropdown
+                                options={['Sale', 'Rent', 'Lease']}
+                                value={form.transactionType}
+                                onChange={(val) => setForm(prev => ({ ...prev, transactionType: val }))}
+                                icons={{ Sale: '💰', Rent: '🔑', Lease: '📄' }}
+                            />
                         </div>
                     </div>
 
@@ -307,9 +316,15 @@ const AddProperty = () => {
                             </div>
                             <div className="form-group">
                                 <label>Furnishing Status</label>
-                                <select name="specifications.furnishingType" value={form.specifications.furnishingType} onChange={handleChange}>
-                                    {FURNISHING_TYPES.map(f => <option key={f} value={f}>{f}</option>)}
-                                </select>
+                                <CustomDropdown
+                                    options={FURNISHING_TYPES}
+                                    value={form.specifications.furnishingType}
+                                    onChange={(val) => setForm(prev => ({
+                                        ...prev,
+                                        specifications: { ...prev.specifications, furnishingType: val }
+                                    }))}
+                                    icons={{ Unfurnished: '🪹', 'Semi Furnished': '🛋️', 'Fully Furnished': '🏡' }}
+                                />
                             </div>
                         </div>
                     </div>
@@ -317,7 +332,7 @@ const AddProperty = () => {
                     {/* Pricing Card */}
                     <div className="bento-item pricing-card">
                         <h3>Financials</h3>
-                        {form.transactionType === 'Rent' ? (
+                        {form.transactionType === 'Rent' || form.transactionType === 'Lease' ? (
                             <div className="form-row">
                                 <div className="form-group">
                                     <label>Monthly Rent</label>
@@ -388,6 +403,55 @@ const AddProperty = () => {
                     </div>
                 </form>
             </main>
+        </div>
+    );
+};
+
+/* ─── Custom Dropdown Component ─── */
+const CustomDropdown = ({ options, value, onChange, icons = {} }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    return (
+        <div className={`custom-dropdown ${isOpen ? 'open' : ''}`} ref={dropdownRef}>
+            <button type="button" className="dropdown-trigger" onClick={() => setIsOpen(!isOpen)}>
+                <span className="dropdown-value">
+                    {icons[value] && <span className="dropdown-icon">{icons[value]}</span>}
+                    {value}
+                </span>
+                <svg className="dropdown-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </button>
+            {isOpen && (
+                <ul className="dropdown-menu">
+                    {options.map((opt) => (
+                        <li
+                            key={opt}
+                            className={`dropdown-item ${opt === value ? 'selected' : ''}`}
+                            onClick={() => { onChange(opt); setIsOpen(false); }}
+                        >
+                            {icons[opt] && <span className="dropdown-icon">{icons[opt]}</span>}
+                            <span>{opt}</span>
+                            {opt === value && (
+                                <svg className="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
